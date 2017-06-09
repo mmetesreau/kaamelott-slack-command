@@ -20,7 +20,11 @@ let commandHandler(ctx: HttpContext) =
         | _ -> "invalid command"
     Successful.OK response ctx    
 
-let app = POST >=> path "/command" >=> commandHandler
+let app = 
+    choose [
+        GET >=>  path "/" >=> Successful.OK "hello world"
+        POST >=> path "/command" >=> commandHandler
+    ]
 
 startWebServer { defaultConfig with bindings = [ HttpBinding.createSimple HTTP "0.0.0.0" port ] } app
 
