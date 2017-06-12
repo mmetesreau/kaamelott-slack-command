@@ -56,12 +56,13 @@ module Helpers =
         |> Successful.OK
         >=> Writers.setMimeType "application/json; charset=utf-8"
 
-    let postFile (token: string) (channel: string) (filepath: string) = async {
+    let postFile (token: string) (channel: string) (text: string) (filepath: string) = async {
         use file = new FileStream(filepath,FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
         let response = 
             "https://slack.com/api/files.upload"
                .SetQueryParam("token", token)
                .SetQueryParam("channels", channel)
+               .SetQueryParam("initial_comment", text)
                .PostMultipartAsync(fun content -> content.AddFile("file",  file, filepath) |> ignore)
                .Result
         let result = response.Content.ReadAsStringAsync().Result
@@ -104,13 +105,18 @@ module Handlers =
     type SlackActionRequest = {
         filename: string
         channelid: string
+        user: string
     }
     with
         static member FromHttpContext (ctx : HttpContext) =
             let parsedPayload = 
                 Uri.UnescapeDataString(getFromFormData "payload" ctx)
-                |> JsonProvider<"""{"actions":[{"name":"Send","type":"button","value":"file.mp3"}], "channel":{"id":"id","name":"name"}}""">.Parse
-            { filename = parsedPayload.Actions.[0].Value; channelid = parsedPayload.Channel.Id }
+                |> JsonProvider<"""{"actions":[{"name":"Send","type":"button","value":"file.mp3"}], "channel":{"id":"id","name":"name"}, "user":{"id":"U0L3LBZFG","name":"mickael"}}""">.Parse
+            { 
+                filename = parsedPayload.Actions.[0].Value 
+                channelid = parsedPayload.Channel.Id 
+                user = sprintf "@%s" parsedPayload.User.Name
+            }
 
     type SlackActionResponse = {
         delete_original: bool
@@ -140,7 +146,7 @@ module Handlers =
     let actionHandler (ctx: HttpContext) =
         let resource = SlackActionRequest.FromHttpContext ctx
         let pathfile = getSoundPathfile resource.filename
-        Async.Start <| postFile token resource.channelid pathfile
+        Async.Start <| postFile token resource.channelid resource.user pathfile
         toJson { 
                 delete_original = true
                } 
