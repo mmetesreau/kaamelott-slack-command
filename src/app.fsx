@@ -35,19 +35,13 @@ module Kaamelott =
 
 [<AutoOpen>]
 module Helpers =
-    let fromJson<'a> json =
-        JsonConvert.DeserializeObject(json, typeof<'a>) :?> 'a
-
-    let getResourceFromReq<'a> (req : HttpRequest) =
-        let getString rawForm =
-            System.Text.Encoding.UTF8.GetString(rawForm)
-        let rawForm =  req.rawForm |> getString
-        printf "rawForm %s" rawForm
-        rawForm |> fromJson<'a>
+    let getFromFormData (key: string) (ctx : HttpContext) =
+        match ctx.request.formData key with
+        | Choice1Of2 x  -> x
+        | _             -> ""
 
     let toJson (value: obj) = 
       let jsonSerializerSettings = JsonSerializerSettings()
-      jsonSerializerSettings.ContractResolver <- CamelCasePropertyNamesContractResolver()
       JsonConvert.SerializeObject(value, jsonSerializerSettings)
       |> Successful.OK
       >=> Writers.setMimeType "application/json; charset=utf-8"
@@ -57,6 +51,11 @@ module Handlers =
     type SlackCommandRequest = {
         text: string
     }
+    with 
+        static member FromHttpContext (ctx : HttpContext) =
+            {
+                text = getFromFormData "text" ctx
+            }
 
     type SlackCommandResponse = {
         text: string
@@ -79,12 +78,14 @@ module Handlers =
         member this.name = "Send"
 
     type SlackActionRequest = {
-        actions: Action list
+        action: string
     }
-    and Action = {
-        name: string
-        value: string
-    }
+    with
+        static member FromHttpContext (ctx : HttpContext) =
+            printf "rawForm %s" <| System.Text.Encoding.UTF8.GetString(ctx.request.rawForm)
+            {
+                action = getFromFormData "text" ctx
+            }
 
     type SlackActionResponse = {
         text: string
@@ -95,8 +96,7 @@ module Handlers =
         Successful.OK "Arthur ! Cuillère..." ctx
 
     let commandHandler (ctx: HttpContext) =
-        let resource = getResourceFromReq<SlackCommandRequest> ctx.request
-        printf "resource %s" resource.text
+        let resource = SlackCommandRequest.FromHttpContext ctx
         let attachments = 
             searchSounds resource.text 5
             |> List.map (fun sound -> 
@@ -114,9 +114,9 @@ module Handlers =
                ctx  
 
     let actionHandler (ctx: HttpContext) =
-        let resource = getResourceFromReq<SlackActionRequest> ctx.request
+        let resource = SlackActionRequest.FromHttpContext ctx
         toJson { 
-                text = sprintf "action %s" resource.actions.[0].value
+                text = sprintf "action %s" resource.action
                 replace_original = false
                } 
                ctx   
@@ -131,4 +131,5 @@ let app =
 let port = 8080
 
 startWebServer { defaultConfig with bindings = [ HttpBinding.createSimple HTTP "0.0.0.0" port ] } app
+
 
