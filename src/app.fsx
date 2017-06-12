@@ -41,7 +41,9 @@ module Helpers =
     let getResourceFromReq<'a> (req : HttpRequest) =
         let getString rawForm =
             System.Text.Encoding.UTF8.GetString(rawForm)
-        req.rawForm |> getString |> fromJson<'a>
+        let rawForm =  req.rawForm |> getString
+        printf "rawForm %s" rawForm
+        rawForm |> fromJson<'a>
 
     let toJson (value: obj) = 
       let jsonSerializerSettings = JsonSerializerSettings()
@@ -94,6 +96,7 @@ module Handlers =
 
     let commandHandler (ctx: HttpContext) =
         let resource = getResourceFromReq<SlackCommandRequest> ctx.request
+        printf "resource %s" resource.text
         let attachments = 
             searchSounds resource.text 5
             |> List.map (fun sound -> 
