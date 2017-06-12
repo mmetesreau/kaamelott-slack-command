@@ -29,16 +29,18 @@ module Kaamelott =
 
     let sounds = Sounds.GetSamples() |> List.ofArray
 
+    let rnd = System.Random()
+    let shuffle = Seq.initInfinite (fun _ -> rnd.Next(0, sounds.Length - 1))
+
     let searchSounds (search: string) (limit: int) =
-        let foundSounds = 
-            if String.IsNullOrEmpty(search) then
-                sounds
-            else
-                match sounds |> List.filter (fun x -> x.Title.IndexOf(search, StringComparison.OrdinalIgnoreCase) <> -1) with
-                | [] -> sounds
-                | filteredSounds -> filteredSounds
+        let shuffleSounds() = shuffle |> Seq.take limit |> Seq.map (fun x -> sounds.[x]) |> List.ofSeq
         
-        foundSounds |> List.take (min foundSounds.Length limit) 
+        if String.IsNullOrEmpty(search) then
+            shuffleSounds()
+        else
+            match sounds |> List.filter (fun x -> x.Title.IndexOf(search, StringComparison.OrdinalIgnoreCase) <> -1) with
+            | [] -> shuffleSounds()
+            | filteredSounds -> List.take (min filteredSounds.Length limit) filteredSounds
      
     let getSoundPathfile (file: string) =
         Path.Combine(__SOURCE_DIRECTORY__, "sounds", file)
@@ -105,7 +107,7 @@ module Handlers =
         member this.``type`` = "button"
         member this.text = "Send"
         member this.name = "Send"
-
+    
     type SlackActionRequest = {
         action: string
         channelid: string
