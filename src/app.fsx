@@ -88,8 +88,7 @@ module Handlers =
             { action = parsedPayload.Actions.[0].Value }
 
     type SlackActionResponse = {
-        text: string
-        replace_original: bool
+        delete_original: bool
     }
 
     let homeHandler (ctx: HttpContext) = 
@@ -116,8 +115,7 @@ module Handlers =
     let actionHandler (ctx: HttpContext) =
         let resource = SlackActionRequest.FromHttpContext ctx
         toJson { 
-                text = sprintf "action %s" resource.action
-                replace_original = false
+                delete_original = true
                } 
                ctx   
 
