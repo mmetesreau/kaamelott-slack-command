@@ -82,10 +82,10 @@ module Handlers =
     }
     with
         static member FromHttpContext (ctx : HttpContext) =
-            printf "rawForm %s" <| System.Text.Encoding.UTF8.GetString(ctx.request.rawForm)
-            {
-                action = getFromFormData "text" ctx
-            }
+            let parsedPayload = 
+                Uri.UnescapeDataString(getFromFormData "payload" ctx)
+                |> JsonProvider<"""{"actions":[{"name":"Send","type":"button","value":"on_en_a_gros.mp3"}]}""">.Parse
+            { action = parsedPayload.Actions.[0].Value }
 
     type SlackActionResponse = {
         text: string
@@ -93,7 +93,7 @@ module Handlers =
     }
 
     let homeHandler (ctx: HttpContext) = 
-        Successful.OK "Arthur ! Cuillère..." ctx
+        Successful.OK "Arthur !" ctx
 
     let commandHandler (ctx: HttpContext) =
         let resource = SlackCommandRequest.FromHttpContext ctx
