@@ -1,8 +1,13 @@
 #r "../packages/Suave/lib/net40/Suave.dll"
-#r "../packages/Newtonsoft.Json/lib/net40/Newtonsoft.Json.dll"
+#r "../packages/Newtonsoft.Json/lib/net45/Newtonsoft.Json.dll"
 #r "../packages/FSharp.Data/lib/net40/FSharp.Data.dll"
+#r "../packages/Flurl/lib/netstandard1.4/Flurl.dll"
+#r "../packages/Flurl.Http/lib/net45/Flurl.Http.dll"
+#r "System.Net.Http.dll"
 
 open System
+open System.IO
+open System.Net.Http
 
 open Suave
 open Suave.Filters
@@ -11,7 +16,13 @@ open Suave.Operators
 open Newtonsoft.Json
 open Newtonsoft.Json.Serialization
 
+open Flurl
+open Flurl.Http
+
 open FSharp.Data
+
+let port = 8080
+let token = Environment.GetEnvironmentVariable("TOKEN")
 
 [<AutoOpen>]
 module Kaamelott =
@@ -30,8 +41,8 @@ module Kaamelott =
         
         foundSounds |> List.take (min foundSounds.Length limit) 
      
-    let getSoundFromFile (file: string) =
-        sounds |> List.tryFind (fun x -> x.File = file)
+    let getSoundPathfile (file: string) =
+        Path.Combine(__SOURCE_DIRECTORY__, "sounds", file)
 
 [<AutoOpen>]
 module Helpers =
@@ -41,10 +52,16 @@ module Helpers =
         | _             -> ""
 
     let toJson (value: obj) = 
-      let jsonSerializerSettings = JsonSerializerSettings()
-      JsonConvert.SerializeObject(value, jsonSerializerSettings)
-      |> Successful.OK
-      >=> Writers.setMimeType "application/json; charset=utf-8"
+        let jsonSerializerSettings = JsonSerializerSettings()
+        JsonConvert.SerializeObject(value, jsonSerializerSettings)
+        |> Successful.OK
+        >=> Writers.setMimeType "application/json; charset=utf-8"
+
+    let postFile (token: string) (channel: string) (filepath: string) =
+        "https://slack.com/api/files.upload"
+           .SetQueryParam("token", token)
+           .SetQueryParam("channels", channel)
+           .PostMultipartAsync(fun content -> content.AddFile("file",  new FileStream(filepath,FileMode.Open), filepath) |> ignore);
 
 [<AutoOpen>]
 module Handlers =
@@ -78,14 +95,15 @@ module Handlers =
         member this.name = "Send"
 
     type SlackActionRequest = {
-        action: string
+        filename: string
+        channelid: string
     }
     with
         static member FromHttpContext (ctx : HttpContext) =
             let parsedPayload = 
                 Uri.UnescapeDataString(getFromFormData "payload" ctx)
-                |> JsonProvider<"""{"actions":[{"name":"Send","type":"button","value":"on_en_a_gros.mp3"}]}""">.Parse
-            { action = parsedPayload.Actions.[0].Value }
+                |> JsonProvider<"""{"actions":[{"name":"Send","type":"button","value":"file.mp3"}], "channel":{"id":"id","name":"name"}}""">.Parse
+            { filename = parsedPayload.Actions.[0].Value; channelid = parsedPayload.Channel.Id }
 
     type SlackActionResponse = {
         delete_original: bool
@@ -114,6 +132,8 @@ module Handlers =
 
     let actionHandler (ctx: HttpContext) =
         let resource = SlackActionRequest.FromHttpContext ctx
+        let pathfile = getSoundPathfile resource.filename
+        postFile token resource.channelid pathfile |> ignore
         toJson { 
                 delete_original = true
                } 
@@ -126,8 +146,4 @@ let app =
         POST >=> path "/action" >=> actionHandler
     ]
 
-let port = 8080
-
 startWebServer { defaultConfig with bindings = [ HttpBinding.createSimple HTTP "0.0.0.0" port ] } app
-
-
