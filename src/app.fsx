@@ -70,7 +70,11 @@ module Helpers =
         ()
     }
 
-          
+    let (|File|_|) (str: string) = 
+        if str.Contains(".mp3") 
+        then Some str
+        else None 
+
 [<AutoOpen>]
 module Handlers =
     type SlackCommandRequest = {
@@ -103,7 +107,7 @@ module Handlers =
         member this.name = "Send"
 
     type SlackActionRequest = {
-        filename: string
+        action: string
         channelid: string
         user: string
     }
@@ -113,9 +117,9 @@ module Handlers =
                 Uri.UnescapeDataString(getFromFormData "payload" ctx)
                 |> JsonProvider<"""{"actions":[{"name":"Send","type":"button","value":"file.mp3"}], "channel":{"id":"id","name":"name"}, "user":{"id":"U0L3LBZFG","name":"mickael"}}""">.Parse
             { 
-                filename = parsedPayload.Actions.[0].Value 
+                action = parsedPayload.Actions.[0].Value 
                 channelid = parsedPayload.Channel.Id 
-                user = sprintf "@%s" parsedPayload.User.Name
+                user = sprintf "<@%s|%s>" parsedPayload.User.Id parsedPayload.User.Name
             }
 
     type SlackActionResponse = {
@@ -139,14 +143,19 @@ module Handlers =
                 })
         toJson {   
                 text = "Kaamelott soundtracks" 
-                attachments = attachments
+                attachments = attachments@[ { text = "Cancel"; actions = [ { value = "cancel" } ] } ]
                }
                ctx  
 
     let actionHandler (ctx: HttpContext) =
         let resource = SlackActionRequest.FromHttpContext ctx
-        let pathfile = getSoundPathfile resource.filename
-        Async.Start <| postFile token resource.channelid resource.user pathfile
+
+        match resource.action with
+        | File filename ->
+            let pathfile = getSoundPathfile filename
+            Async.Start <| postFile token resource.channelid resource.user pathfile
+        | _ -> ()
+
         toJson { 
                 delete_original = true
                } 
