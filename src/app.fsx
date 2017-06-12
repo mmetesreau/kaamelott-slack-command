@@ -7,7 +7,6 @@
 
 open System
 open System.IO
-open System.Net.Http
 
 open Suave
 open Suave.Filters
@@ -57,12 +56,20 @@ module Helpers =
         |> Successful.OK
         >=> Writers.setMimeType "application/json; charset=utf-8"
 
-    let postFile (token: string) (channel: string) (filepath: string) =
-        "https://slack.com/api/files.upload"
-           .SetQueryParam("token", token)
-           .SetQueryParam("channels", channel)
-           .PostMultipartAsync(fun content -> content.AddFile("file",  new FileStream(filepath,FileMode.Open), filepath) |> ignore);
+    let postFile (token: string) (channel: string) (filepath: string) = async {
+        use file = new FileStream(filepath,FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+        let response = 
+            "https://slack.com/api/files.upload"
+               .SetQueryParam("token", token)
+               .SetQueryParam("channels", channel)
+               .PostMultipartAsync(fun content -> content.AddFile("file",  file, filepath) |> ignore)
+               .Result
+        let result = response.Content.ReadAsStringAsync().Result
+        printfn "file upload result: %s" result
+        ()
+    }
 
+          
 [<AutoOpen>]
 module Handlers =
     type SlackCommandRequest = {
@@ -133,7 +140,7 @@ module Handlers =
     let actionHandler (ctx: HttpContext) =
         let resource = SlackActionRequest.FromHttpContext ctx
         let pathfile = getSoundPathfile resource.filename
-        postFile token resource.channelid pathfile |> ignore
+        Async.Start <| postFile token resource.channelid pathfile
         toJson { 
                 delete_original = true
                } 
