@@ -66,9 +66,11 @@ module Kaamelott =
         sound.Description.IndexOf(text, StringComparison.OrdinalIgnoreCase) <> -1
     
     let private searchSoundsByDescription (sounds: Sound list) (search: string) (limit: int) = 
-        sounds 
+        let filteredSounds = 
+            sounds 
             |> List.filter (soundDescriptionContains search)
-            |> List.take limit
+        
+        filteredSounds |> List.take (min limit filteredSounds.Length)
 
     let searchSounds (search: string) (limit: int) =
         match searchSoundsByDescription sounds search limit with
