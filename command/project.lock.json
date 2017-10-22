@@ -1,0 +1,68 @@
+{
+  "version": 2,
+  "targets": {
+    ".NETFramework,Version=v4.6": {
+      "FSharp.Data/2.3.3": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net40/FSharp.Data.dll": {}
+        },
+        "runtime": {
+          "lib/net40/FSharp.Data.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FSharp.Data/2.3.3": {
+      "sha512": "RwBtaWbOjWUBpyID2VrE3m2vgJtUR3IjcSWR98SwKo6IpCehhkn4HTc/n72ETc2F2+Nt6+6rxjnQpmL8xLjP8Q==",
+      "type": "package",
+      "path": "fsharp.data/2.3.3",
+      "files": [
+        "fsharp.data.2.3.3.nupkg.sha512",
+        "fsharp.data.nuspec",
+        "lib/net40/FSharp.Data.DesignTime.dll",
+        "lib/net40/FSharp.Data.DesignTime.pdb",
+        "lib/net40/FSharp.Data.DesignTime.xml",
+        "lib/net40/FSharp.Data.dll",
+        "lib/net40/FSharp.Data.pdb",
+        "lib/net40/FSharp.Data.xml",
+        "lib/portable-net45+netcore45+wpa81+wp8/FSharp.Data.DesignTime.dll",
+        "lib/portable-net45+netcore45+wpa81+wp8/FSharp.Data.DesignTime.pdb",
+        "lib/portable-net45+netcore45+wpa81+wp8/FSharp.Data.DesignTime.xml",
+        "lib/portable-net45+netcore45+wpa81+wp8/FSharp.Data.dll",
+        "lib/portable-net45+netcore45+wpa81+wp8/FSharp.Data.pdb",
+        "lib/portable-net45+netcore45+wpa81+wp8/FSharp.Data.xml",
+        "lib/portable-net45+netcore45/FSharp.Data.DesignTime.dll",
+        "lib/portable-net45+netcore45/FSharp.Data.DesignTime.pdb",
+        "lib/portable-net45+netcore45/FSharp.Data.DesignTime.xml",
+        "lib/portable-net45+netcore45/FSharp.Data.dll",
+        "lib/portable-net45+netcore45/FSharp.Data.pdb",
+        "lib/portable-net45+netcore45/FSharp.Data.xml",
+        "lib/portable-net45+sl50+netcore45/FSharp.Data.DesignTime.dll",
+        "lib/portable-net45+sl50+netcore45/FSharp.Data.DesignTime.pdb",
+        "lib/portable-net45+sl50+netcore45/FSharp.Data.DesignTime.xml",
+        "lib/portable-net45+sl50+netcore45/FSharp.Data.dll",
+        "lib/portable-net45+sl50+netcore45/FSharp.Data.pdb",
+        "lib/portable-net45+sl50+netcore45/FSharp.Data.xml",
+        "linqpad-samples/GitHub.linq",
+        "linqpad-samples/Jira.linq",
+        "linqpad-samples/TypeInference.linq"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [],
+    ".NETFramework,Version=v4.6": [
+      "FSharp.Data >= 2.3.3"
+    ]
+  },
+  "tools": {},
+  "projectFileToolGroups": {},
+  "packageFolders": {
+    "D:\\home\\data\\Functions\\packages\\nuget": {}
+  }
+}

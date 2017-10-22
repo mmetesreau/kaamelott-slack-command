@@ -1,0 +1,10 @@
+{
+  "frameworks": {
+    "net46":{
+      "dependencies": {
+        "FSharp.Data": "2.3.3",
+        "Flurl.Http": "1.1.2"
+      }
+    }
+  }
+}

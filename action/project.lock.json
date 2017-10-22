@@ -1,0 +1,196 @@
+{
+  "version": 2,
+  "targets": {
+    ".NETFramework,Version=v4.6": {
+      "Flurl/2.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/portable40-net40+sl5+win8+wp8+wpa81/Flurl.dll": {}
+        },
+        "runtime": {
+          "lib/portable40-net40+sl5+win8+wp8+wpa81/Flurl.dll": {}
+        }
+      },
+      "Flurl.Http/1.1.2": {
+        "type": "package",
+        "dependencies": {
+          "Flurl": "2.3.0",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "frameworkAssemblies": [
+          "System.Net.Http"
+        ],
+        "compile": {
+          "lib/net45/Flurl.Http.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Flurl.Http.dll": {}
+        }
+      },
+      "FSharp.Data/2.3.3": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net40/FSharp.Data.dll": {}
+        },
+        "runtime": {
+          "lib/net40/FSharp.Data.dll": {}
+        }
+      },
+      "Newtonsoft.Json/9.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Flurl/2.3.0": {
+      "sha512": "g4kHCLa842E6K3Xq8iZlXNw9uspww78/1Xjw8isMj3PcZ3oyEGSz+WKR1QQDAGJHQgvRweOqsnGR0ERUlEUI4A==",
+      "type": "package",
+      "path": "flurl/2.3.0",
+      "files": [
+        "flurl.2.3.0.nupkg.sha512",
+        "flurl.nuspec",
+        "lib/monoandroid/Flurl.deps.json",
+        "lib/monoandroid/Flurl.dll",
+        "lib/monoandroid/Flurl.pdb",
+        "lib/monoandroid/Flurl.xml",
+        "lib/monotouch/Flurl.deps.json",
+        "lib/monotouch/Flurl.dll",
+        "lib/monotouch/Flurl.pdb",
+        "lib/monotouch/Flurl.xml",
+        "lib/netstandard1.4/Flurl.deps.json",
+        "lib/netstandard1.4/Flurl.dll",
+        "lib/netstandard1.4/Flurl.pdb",
+        "lib/netstandard1.4/Flurl.xml",
+        "lib/portable40-net40+sl5+win8+wp8+wpa81/Flurl.deps.json",
+        "lib/portable40-net40+sl5+win8+wp8+wpa81/Flurl.dll",
+        "lib/portable40-net40+sl5+win8+wp8+wpa81/Flurl.pdb",
+        "lib/portable40-net40+sl5+win8+wp8+wpa81/Flurl.xml",
+        "lib/xamarin.ios/Flurl.deps.json",
+        "lib/xamarin.ios/Flurl.dll",
+        "lib/xamarin.ios/Flurl.pdb",
+        "lib/xamarin.ios/Flurl.xml",
+        "lib/xamarin.mac/Flurl.deps.json",
+        "lib/xamarin.mac/Flurl.dll",
+        "lib/xamarin.mac/Flurl.pdb",
+        "lib/xamarin.mac/Flurl.xml"
+      ]
+    },
+    "Flurl.Http/1.1.2": {
+      "sha512": "tri77atlkeri4ZVhDPcAQpBMKdXhCJyN6qYQCVRZzB8j3u6TSF5LnjzPN3S2CekxgZD2F56DxzR6zDlhVnYq2g==",
+      "type": "package",
+      "path": "flurl.http/1.1.2",
+      "files": [
+        "flurl.http.1.1.2.nupkg.sha512",
+        "flurl.http.nuspec",
+        "lib/monoandroid/Flurl.Http.deps.json",
+        "lib/monoandroid/Flurl.Http.dll",
+        "lib/monoandroid/Flurl.Http.pdb",
+        "lib/monoandroid/Flurl.Http.xml",
+        "lib/monotouch/Flurl.Http.deps.json",
+        "lib/monotouch/Flurl.Http.dll",
+        "lib/monotouch/Flurl.Http.pdb",
+        "lib/monotouch/Flurl.Http.xml",
+        "lib/net45/Flurl.Http.dll",
+        "lib/net45/Flurl.Http.pdb",
+        "lib/net45/Flurl.Http.xml",
+        "lib/netstandard1.4/Flurl.Http.deps.json",
+        "lib/netstandard1.4/Flurl.Http.dll",
+        "lib/netstandard1.4/Flurl.Http.pdb",
+        "lib/netstandard1.4/Flurl.Http.xml",
+        "lib/portable40-net45+sl5+win8+wp8+wpa81/Flurl.Http.deps.json",
+        "lib/portable40-net45+sl5+win8+wp8+wpa81/Flurl.Http.dll",
+        "lib/portable40-net45+sl5+win8+wp8+wpa81/Flurl.Http.pdb",
+        "lib/portable40-net45+sl5+win8+wp8+wpa81/Flurl.Http.xml",
+        "lib/xamarin.ios/Flurl.Http.deps.json",
+        "lib/xamarin.ios/Flurl.Http.dll",
+        "lib/xamarin.ios/Flurl.Http.pdb",
+        "lib/xamarin.ios/Flurl.Http.xml",
+        "lib/xamarin.mac/Flurl.Http.deps.json",
+        "lib/xamarin.mac/Flurl.Http.dll",
+        "lib/xamarin.mac/Flurl.Http.pdb",
+        "lib/xamarin.mac/Flurl.Http.xml"
+      ]
+    },
+    "FSharp.Data/2.3.3": {
+      "sha512": "RwBtaWbOjWUBpyID2VrE3m2vgJtUR3IjcSWR98SwKo6IpCehhkn4HTc/n72ETc2F2+Nt6+6rxjnQpmL8xLjP8Q==",
+      "type": "package",
+      "path": "fsharp.data/2.3.3",
+      "files": [
+        "fsharp.data.2.3.3.nupkg.sha512",
+        "fsharp.data.nuspec",
+        "lib/net40/FSharp.Data.DesignTime.dll",
+        "lib/net40/FSharp.Data.DesignTime.pdb",
+        "lib/net40/FSharp.Data.DesignTime.xml",
+        "lib/net40/FSharp.Data.dll",
+        "lib/net40/FSharp.Data.pdb",
+        "lib/net40/FSharp.Data.xml",
+        "lib/portable-net45+netcore45+wpa81+wp8/FSharp.Data.DesignTime.dll",
+        "lib/portable-net45+netcore45+wpa81+wp8/FSharp.Data.DesignTime.pdb",
+        "lib/portable-net45+netcore45+wpa81+wp8/FSharp.Data.DesignTime.xml",
+        "lib/portable-net45+netcore45+wpa81+wp8/FSharp.Data.dll",
+        "lib/portable-net45+netcore45+wpa81+wp8/FSharp.Data.pdb",
+        "lib/portable-net45+netcore45+wpa81+wp8/FSharp.Data.xml",
+        "lib/portable-net45+netcore45/FSharp.Data.DesignTime.dll",
+        "lib/portable-net45+netcore45/FSharp.Data.DesignTime.pdb",
+        "lib/portable-net45+netcore45/FSharp.Data.DesignTime.xml",
+        "lib/portable-net45+netcore45/FSharp.Data.dll",
+        "lib/portable-net45+netcore45/FSharp.Data.pdb",
+        "lib/portable-net45+netcore45/FSharp.Data.xml",
+        "lib/portable-net45+sl50+netcore45/FSharp.Data.DesignTime.dll",
+        "lib/portable-net45+sl50+netcore45/FSharp.Data.DesignTime.pdb",
+        "lib/portable-net45+sl50+netcore45/FSharp.Data.DesignTime.xml",
+        "lib/portable-net45+sl50+netcore45/FSharp.Data.dll",
+        "lib/portable-net45+sl50+netcore45/FSharp.Data.pdb",
+        "lib/portable-net45+sl50+netcore45/FSharp.Data.xml",
+        "linqpad-samples/GitHub.linq",
+        "linqpad-samples/Jira.linq",
+        "linqpad-samples/TypeInference.linq"
+      ]
+    },
+    "Newtonsoft.Json/9.0.1": {
+      "sha512": "U82mHQSKaIk+lpSVCbWYKNavmNH1i5xrExDEquU1i6I5pV6UMOqRnJRSlKO3cMPfcpp0RgDY+8jUXHdQ4IfXvw==",
+      "type": "package",
+      "path": "newtonsoft.json/9.0.1",
+      "files": [
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.9.0.1.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "tools/install.ps1"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [],
+    ".NETFramework,Version=v4.6": [
+      "FSharp.Data >= 2.3.3",
+      "Flurl.Http >= 1.1.2"
+    ]
+  },
+  "tools": {},
+  "projectFileToolGroups": {},
+  "packageFolders": {
+    "D:\\home\\data\\Functions\\packages\\nuget": {}
+  }
+}
