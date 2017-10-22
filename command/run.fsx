@@ -105,8 +105,6 @@ let Run(req: HttpRequestMessage, log: TraceWriter) =
                     |> List.ofSeq
         
         let verificationToken = Environment.GetEnvironmentVariable("VERIFICATIONTOKEN", EnvironmentVariableTarget.Process)
-
-        log.Info("vt : " + verificationToken)
         
         let! formData = getFormData(req)
 
