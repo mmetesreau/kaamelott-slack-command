@@ -98,7 +98,6 @@
 			"hostingEnvironment": "",
 			"clientAffinityEnabled": false,
 			"siteConfig": {
-				"alwaysOn": false,
 				"cors": {
 					"allowedOrigins": [
 						"*"
