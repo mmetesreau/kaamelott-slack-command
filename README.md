@@ -7,14 +7,9 @@ Slack command to send kaamelott soundtracks.
 ## Technical Instructions
 
 ### Requirements
-- F# 
 
-### Run
+You can deploy this to Heroku by clicking this button:
 
-```
-$env:ACCESSTOKEN="yourslackaccesstoken"
-$env:VERIFICATIONTOKEN="yourslackverificationtoken"
-.\paket\paket.bootstrapper.exe
-.\paket\paket.exe restore
-fsi.exe .\src\app.fsx
-```
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMiKaDoO%2Fkaamelottslackcommand%2Fazurefunction%2Fazuredeploy.json)
+
+Don't forget to set the ACCESSTOKEN and VERIFICATIONTOKEN config vars.
