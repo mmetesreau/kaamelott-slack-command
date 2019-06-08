@@ -68,9 +68,16 @@ Last but no least, the application will need the ```OAuth Access Token``` and th
 ### Run
 
 ```
-$env:ACCESSTOKEN="yourslackaccesstoken"
-$env:VERIFICATIONTOKEN="yourslackverificationtoken"
+$env:ACCESSTOKEN="[yourslackaccesstoken]"
+$env:VERIFICATIONTOKEN="[yourslackverificationtoken]"
 .\paket\paket.bootstrapper.exe
 .\paket\paket.exe restore
 fsi.exe .\src\app.fsx
+```
+
+### Using Docker
+
+```
+docker build -t kaamelotslackcommand .
+docker run -d -p 8080:[your_port] --env ACCESSTOKEN=[yourslackaccesstoken] --env VERIFICATIONTOKEN=[yourslackverificationtoken] kaamelottslackcommand
 ```
