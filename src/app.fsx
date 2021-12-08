@@ -1,9 +1,6 @@
-#r "../packages/Suave/lib/net40/Suave.dll"
-#r "../packages/Newtonsoft.Json/lib/net45/Newtonsoft.Json.dll"
-#r "../packages/FSharp.Data/lib/net40/FSharp.Data.dll"
-#r "../packages/Flurl/lib/netstandard1.4/Flurl.dll"
-#r "../packages/Flurl.Http/lib/net45/Flurl.Http.dll"
-#r "System.Net.Http.dll"
+#r "nuget:Suave"
+#r "nuget:Flurl.Http"
+#r "nuget:Fsharp.Data"
 
 open System
 open System.IO
@@ -13,7 +10,6 @@ open Suave.Filters
 open Suave.Operators
 
 open Newtonsoft.Json
-open Newtonsoft.Json.Serialization
 
 open Flurl
 open Flurl.Http
@@ -22,6 +18,9 @@ open FSharp.Data
 
 [<AutoOpen>]
 module Helpers =
+
+    [<Literal>] 
+    let ResolutionFolder = __SOURCE_DIRECTORY__
 
     let getFromFormData (key: string) (ctx : HttpContext) =
         match ctx.request.formData key with
@@ -49,9 +48,9 @@ module Kaamelott =
         Filename: string
         Description: string
     }
-
+  
     let private sounds = 
-        JsonProvider<"./sounds/sounds.json">.Load("./sounds/sounds.json")
+        JsonProvider<"./sounds/sounds.json", ResolutionFolder=ResolutionFolder>.Load(Path.Combine(__SOURCE_DIRECTORY__, "sounds", "sounds.json"))
             |> Seq.map (fun sound -> { Filename = sound.File; Description = sound.Title })
             |> List.ofSeq
     
@@ -101,7 +100,7 @@ module Slack =
     } with
         static member FromHttpContext (ctx: HttpContext) =
             let payload = getFromFormData "payload" ctx |> unescapeString
-            let parsedPayload = payload |> JsonProvider<"slackActionRequest.json">.Parse
+            let parsedPayload = payload |> JsonProvider<"slackActionRequest.json", ResolutionFolder=ResolutionFolder>.Parse
             { 
                 Action = parsedPayload.Actions.[0].Value 
                 ChannelId = parsedPayload.Channel.Id 
@@ -164,15 +163,15 @@ module Slack =
         
     let postFileInSlackChannel (accessToken: string) (channel: string) (comment: string) (filepath: string) = async {
         use file = new FileStream(filepath,FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
-        let response = 
+        let! response = 
             "https://slack.com/api/files.upload"
-               .SetQueryParam("token", accessToken)
+                .WithHeader("Authorization", $"Bearer {accessToken}")
                .SetQueryParam("channels", channel)
                .SetQueryParam("initial_comment", comment)
                .PostMultipartAsync(fun content -> content.AddFile("file",  file, filepath) |> ignore)
-               .Result
+                    |> Async.AwaitTask
 
-        let result = response.Content.ReadAsStringAsync().Result
+        let! result = response.GetStringAsync() |> Async.AwaitTask
         printfn "file upload result: %s" result
         ()
     }
@@ -209,8 +208,8 @@ module Handlers =
             createActionResponse() |> toJson <| ctx
 
 let port = 8080
-let accessToken = Environment.GetEnvironmentVariable("ACCESSTOKEN")
-let verificationToken = Environment.GetEnvironmentVariable("VERIFICATIONTOKEN")
+let accessToken = defaultArg (Option.ofObj<string>(Environment.GetEnvironmentVariable("ACCESSTOKEN"))) "1234567890"  
+let verificationToken = defaultArg (Option.ofObj<string>(Environment.GetEnvironmentVariable("VERIFICATIONTOKEN"))) "1234567890"  
 
 let app = 
     choose [

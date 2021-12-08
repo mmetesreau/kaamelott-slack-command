@@ -1,0 +1,9 @@
+GET http://127.0.0.1:8080
+
+###
+
+POST http://127.0.0.1:8080/command
+Content-Type: application/x-www-form-urlencoded
+
+text=roulette
+&token=1234567890

@@ -28,27 +28,19 @@ Create a new command by clicking the ```Create New Command button```. Fill in th
 
 As the application endpoint which listen for commands is /command, the ```Request URL``` should be ```http[s]://[application]/command```.
 
-Click on ```Interactive Components```.
-
-![step5](/img/step5.png "step5")
-
-Turn on ```Interactivity```. Fill in the required information.
+Click on ```Interactivity & Shortcuts``` and turn on ```Interactivity```. Fill in the required information.
 
 ![step6](/img/step6.png "step6")
 
 As the application endpoint which listen for actions is /action, the ```Request URL``` should be ```http[s]://[application]/action```.
 
-Click on ```Permissions```.
-
-![step7](/img/step7.png "step7")
-
-Add the ```Upload and modify files as user``` in ```Scopes```.
+Click on ```OAuth & Permissions``` and add the ```files:write Upload, edit, and delete files on a user’s behalf``` in ```User Token Scopes```.
 
 ![step8](/img/step8.png "step8")
 
 It is needed to upload the sounds directly to Slack.
 
-Install the application to your workspace by clicking the ```Install App To Workspace``` button.
+Install the application to your workspace by clicking the ```Install App / Install To Workspace``` button.
 
 ![step9](/img/step9.png "step9")
 
@@ -63,21 +55,20 @@ Last but no least, the application will need the ```OAuth Access Token``` and th
 
 ### Requirements
 
-- F#
+- .NET 6
 
 ### Run
 
 ```
 $env:ACCESSTOKEN="[yourslackaccesstoken]"
 $env:VERIFICATIONTOKEN="[yourslackverificationtoken]"
-.\paket\paket.bootstrapper.exe
-.\paket\paket.exe restore
-fsi.exe .\src\app.fsx
+dotnet restore
+dotnet fsi .\src\app.fsx
 ```
 
 ### Using Docker
 
 ```
-docker build -t kaamelotslackcommand .
+docker build -t kaamelottslackcommand .
 docker run -d -p 8080:[your_port] --env ACCESSTOKEN=[yourslackaccesstoken] --env VERIFICATIONTOKEN=[yourslackverificationtoken] kaamelottslackcommand
 ```
