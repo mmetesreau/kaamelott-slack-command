@@ -1,8 +1,8 @@
 {
     "name": "Kaamelott slack command",
     "description": "Search and send Kaamelott soundtrack in Slack.",
-    "website": "https://github.com/mmetesreau/kaamelottslackcommand",
-    "repository": "https://github.com/mmetesreau/kaamelottslackcommand",
-    "logo": "https://github.com/mmetesreau/kaamelottslackcommand/raw/master/arthur.png",
+    "website": "https://github.com/mmetesreau/kaamelott-slack-command",
+    "repository": "https://github.com/mmetesreau/kaamelott-slack-command",
+    "logo": "https://github.com/mmetesreau/kaamelott-slack-command/raw/master/arthur.png",
     "stack": "container"
   }
