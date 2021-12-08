@@ -1,0 +1,7 @@
+setup:
+  config:
+    ACCESSTOKEN: 123456789
+    VERIFICATIONTOKEN: 123456789
+build:
+  docker:
+    web: Dockerfile

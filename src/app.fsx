@@ -207,7 +207,7 @@ module Handlers =
 
             createActionResponse() |> toJson <| ctx
 
-let port = 8080
+let port = defaultArg (Option.ofObj<string>(Environment.GetEnvironmentVariable("PORT"))) "8080"
 let accessToken = defaultArg (Option.ofObj<string>(Environment.GetEnvironmentVariable("ACCESSTOKEN"))) "1234567890"  
 let verificationToken = defaultArg (Option.ofObj<string>(Environment.GetEnvironmentVariable("VERIFICATIONTOKEN"))) "1234567890"  
 
@@ -218,4 +218,4 @@ let app =
         POST >=> path "/action" >=> actionHandler verificationToken accessToken
     ]
 
-startWebServer { defaultConfig with bindings = [ HttpBinding.createSimple HTTP "0.0.0.0" port ] } app
+startWebServer { defaultConfig with bindings = [ HttpBinding.createSimple HTTP "0.0.0.0" (int port) ] } app

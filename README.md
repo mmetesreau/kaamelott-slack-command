@@ -72,3 +72,11 @@ dotnet fsi .\src\app.fsx
 docker build -t kaamelottslackcommand .
 docker run -d -p 8080:[your_port] --env ACCESSTOKEN=[yourslackaccesstoken] --env VERIFICATIONTOKEN=[yourslackverificationtoken] kaamelottslackcommand
 ```
+
+### Deploy to Heroku
+
+You can deploy this to Heroku by clicking this button:
+
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+Don't forget to set the ACCESSTOKEN and VERIFICATIONTOKEN config vars.
